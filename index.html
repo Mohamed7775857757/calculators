@@ -3,115 +3,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Net Amount Financed Calculator</title>
+    <title>Multi-Calculator</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 40px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-        }
-        .calculator {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            max-width: 600px;
-            margin: auto;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input[type="number"] {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        .result {
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        button {
-            padding: 10px 15px;
-            margin-right: 10px;
-            cursor: pointer;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .tabs { display: flex; margin-bottom: 20px; }
+        .tab { padding: 10px 20px; border: 1px solid #ccc; cursor: pointer; }
+        .tab.active { background-color: #eee; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .form-group { margin-bottom: 10px; }
+        label { display: block; margin-bottom: 5px; }
+        input { width: 200px; padding: 5px; }
+        button { margin-top: 10px; padding: 10px 15px; }
     </style>
 </head>
 <body>
-    <h1>Net Amount Financed Calculator</h1>
-    <div class="calculator">
-        <div class="form-group"><label>GST on asset</label><input type="number" id="input0" value="6818.181818181818" step="any"></div>
-<div class="form-group"><label>ITC on asset</label><input type="number" id="input1" value="6334.0" step="any"></div>
-<div class="form-group"><label>On Roads</label><input type="number" id="input2" value="2000.0" step="any"></div>
-<div class="form-group"><label>Luxury Car Tax</label><input type="number" id="input3" value="1000.0" step="any"></div>
-<div class="form-group"><label>Estab Fee</label><input type="number" id="input4" value="499.0" step="any"></div>
-<div class="form-group"><label>Origination Fee </label><input type="number" id="input5" value="990.0" step="any"></div>
-<div class="form-group"><label>Origination Fee ITC</label><input type="number" id="input6" value="90.0" step="any"></div>
-<div class="form-group"><label>PPSR Reg </label><input type="number" id="input7" value="6.0" step="any"></div>
-<div class="form-group"><label>PPSR Search</label><input type="number" id="input8" value="2.0" step="any"></div>
-<div class="form-group"><label>Total Insurance</label><input type="number" id="input9" value="2000.0" step="any"></div>
-<div class="form-group"><label>Commission applied to NAF</label><input type="number" id="input10" value="2000.0" step="any"></div>
-<div class="form-group"><label>ITC on Commission</label><input type="number" id="input11" value="181.8181818181818" step="any"></div>
-<div class="form-group"><label>TOTAL</label><input type="number" id="input12" value="76891.18181818182" step="any"></div>
+    <h1>Multi-Calculator</h1>
+    <div class="tabs">
+        <div class="tab active" onclick="showTab('naf')">Net Amount Financed</div>
+        <div class="tab" onclick="showTab('commission')">Commission Calculator</div>
+        <div class="tab" onclick="showTab('loan')">Loan Repayment Calculator</div>
+    </div>
 
-        <button onclick="calculateNAF()">Calculate NAF</button>
-        <button onclick="exportCSV()">Export CSV</button>
-        <button onclick="exportPDF()">Export PDF</button>
-        <div class="result" id="result">Total NAF: </div>
+    <div id="naf" class="tab-content active">
+        <h2>Net Amount Financed</h2>
+        <form id="nafForm">
+            <div class="form-group"><label>Asset Price (Incl GST)</label><input type="number" step="any" name="Asset Price (Incl GST)" value="75000"></div><div class="form-group"><label>GST on asset</label><input type="number" step="any" name="GST on asset" value="6818.181818181818"></div><div class="form-group"><label>ITC on asset</label><input type="number" step="any" name="ITC on asset" value="6334"></div><div class="form-group"><label>On Roads</label><input type="number" step="any" name="On Roads" value="2000"></div><div class="form-group"><label>Luxury Car Tax</label><input type="number" step="any" name="Luxury Car Tax" value="1000"></div><div class="form-group"><label>Estab Fee</label><input type="number" step="any" name="Estab Fee" value="499"></div><div class="form-group"><label>Origination Fee</label><input type="number" step="any" name="Origination Fee" value="990"></div><div class="form-group"><label>Origination Fee ITC</label><input type="number" step="any" name="Origination Fee ITC" value="90"></div><div class="form-group"><label>PPSR Reg</label><input type="number" step="any" name="PPSR Reg" value="6"></div><div class="form-group"><label>PPSR Search</label><input type="number" step="any" name="PPSR Search" value="2"></div><div class="form-group"><label>Total Insurance</label><input type="number" step="any" name="Total Insurance" value="2000"></div><div class="form-group"><label>Commission applied to NAF</label><input type="number" step="any" name="Commission applied to NAF" value="2000"></div><div class="form-group"><label>ITC on Commission</label><input type="number" step="any" name="ITC on Commission" value="181.8181818181818"></div>
+            <button type="button" onclick="calculateNAF()">Calculate NAF</button>
+        </form>
+        <h3 id="nafResult"></h3>
+        <button onclick="exportCSV('nafForm')">Export CSV</button>
+        <button onclick="exportPDF('nafForm', 'Net Amount Financed')">Export PDF</button>
+    </div>
+
+    <div id="commission" class="tab-content">
+        <h2>Commission Calculator</h2>
+        <p>Coming soon...</p>
+    </div>
+
+    <div id="loan" class="tab-content">
+        <h2>Loan Repayment Calculator</h2>
+        <p>Coming soon...</p>
     </div>
 
     <script>
+        function showTab(tabId) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelector('.tab[onclick="showTab(\'' + tabId + '\')"]').classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+
         function calculateNAF() {
+            const form = document.getElementById('nafForm');
             let total = 0;
-            for (let i = 0; i < 13; i++) {
-                let val = parseFloat(document.getElementById('input' + i).value) || 0;
-                total += val;
-            }
-            document.getElementById('result').innerText = 'Total NAF: ' + total.toFixed(2);
+            Array.from(form.elements).forEach(input => {
+                if (input.type === 'number') {
+                    total += parseFloat(input.value) || 0;
+                }
+            });
+            document.getElementById('nafResult').innerText = 'Total Net Amount Financed: $' + total.toFixed(2);
         }
 
-        function exportCSV() {
-            let csvContent = "data:text/csv;charset=utf-8,Field,Value\n";
-            for (let i = 0; i < 13; i++) {
-                let field = document.querySelectorAll('label')[i].innerText;
-                let val = document.getElementById('input' + i).value;
-                csvContent += field + "," + val + "\n";
-            }
-            let total = document.getElementById('result').innerText.split(': ')[1];
-            csvContent += "TOTAL," + total + "\n";
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "naf_calculator.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function exportPDF() {
-            let content = "";
-            for (let i = 0; i < 13; i++) {
-                let field = document.querySelectorAll('label')[i].innerText;
-                let val = document.getElementById('input' + i).value;
-                content += field + ": " + val + "\n";
-            }
-            let resultText = document.getElementById('result').innerText;
-            content += resultText;
-
-            const blob = new Blob([content], { type: 'application/pdf' });
-            const link = document.createElement("a");
+        function exportCSV(formId) {
+            const form = document.getElementById(formId);
+            let csv = 'Field,Value\n';
+            Array.from(form.elements).forEach(input => {
+                if (input.type === 'number') {
+                    csv += input.name + ',' + input.value + '\n';
+                }
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = "naf_calculator.pdf";
-            document.body.appendChild(link);
+            link.download = formId + '.csv';
             link.click();
-            document.body.removeChild(link);
+        }
+
+        function exportPDF(formId, title) {
+            const form = document.getElementById(formId);
+            let content = title + '\n\n';
+            Array.from(form.elements).forEach(input => {
+                if (input.type === 'number') {
+                    content += input.name + ': ' + input.value + '\n';
+                }
+            });
+            const blob = new Blob([content], { type: 'application/pdf' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = formId + '.pdf';
+            link.click();
         }
     </script>
 </body>
