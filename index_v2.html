@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Net Amount Financed Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        .calculator {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Net Amount Financed Calculator</h1>
+    <div class="calculator">
+        <div class="form-group"><label>GST on asset</label><input type="number" id="input0" value="6818.181818181818" step="any"></div>
+<div class="form-group"><label>ITC on asset</label><input type="number" id="input1" value="6334.0" step="any"></div>
+<div class="form-group"><label>On Roads</label><input type="number" id="input2" value="2000.0" step="any"></div>
+<div class="form-group"><label>Luxury Car Tax</label><input type="number" id="input3" value="1000.0" step="any"></div>
+<div class="form-group"><label>Estab Fee</label><input type="number" id="input4" value="499.0" step="any"></div>
+<div class="form-group"><label>Origination Fee </label><input type="number" id="input5" value="990.0" step="any"></div>
+<div class="form-group"><label>Origination Fee ITC</label><input type="number" id="input6" value="90.0" step="any"></div>
+<div class="form-group"><label>PPSR Reg </label><input type="number" id="input7" value="6.0" step="any"></div>
+<div class="form-group"><label>PPSR Search</label><input type="number" id="input8" value="2.0" step="any"></div>
+<div class="form-group"><label>Total Insurance</label><input type="number" id="input9" value="2000.0" step="any"></div>
+<div class="form-group"><label>Commission applied to NAF</label><input type="number" id="input10" value="2000.0" step="any"></div>
+<div class="form-group"><label>ITC on Commission</label><input type="number" id="input11" value="181.8181818181818" step="any"></div>
+<div class="form-group"><label>TOTAL</label><input type="number" id="input12" value="76891.18181818182" step="any"></div>
+
+        <button onclick="calculateNAF()">Calculate NAF</button>
+        <button onclick="exportCSV()">Export CSV</button>
+        <button onclick="exportPDF()">Export PDF</button>
+        <div class="result" id="result">Total NAF: </div>
+    </div>
+
+    <script>
+        function calculateNAF() {
+            let total = 0;
+            for (let i = 0; i < 13; i++) {
+                let val = parseFloat(document.getElementById('input' + i).value) || 0;
+                total += val;
+            }
+            document.getElementById('result').innerText = 'Total NAF: ' + total.toFixed(2);
+        }
+
+        function exportCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,Field,Value\n";
+            for (let i = 0; i < 13; i++) {
+                let field = document.querySelectorAll('label')[i].innerText;
+                let val = document.getElementById('input' + i).value;
+                csvContent += field + "," + val + "\n";
+            }
+            let total = document.getElementById('result').innerText.split(': ')[1];
+            csvContent += "TOTAL," + total + "\n";
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "naf_calculator.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportPDF() {
+            let content = "";
+            for (let i = 0; i < 13; i++) {
+                let field = document.querySelectorAll('label')[i].innerText;
+                let val = document.getElementById('input' + i).value;
+                content += field + ": " + val + "\n";
+            }
+            let resultText = document.getElementById('result').innerText;
+            content += resultText;
+
+            const blob = new Blob([content], { type: 'application/pdf' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "naf_calculator.pdf";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
